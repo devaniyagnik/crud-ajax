@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>update</title>
+  </head>
+  <body>
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous"
+        />
+        <title>Form with Js</title>
+
+        <style>
+          body {
+            margin: 0%;
+            padding: 0%;
+            box-sizing: border-box;
+
+            width: 100%;
+            height: 100vh;
+          }
+          .container {
+            width: 1280px;
+          }
+          .inputcss {
+            width: 40%;
+            margin: 10px 0px;
+            padding: 15px 20px;
+            border: 0px;
+            background-color: antiquewhite;
+            border-radius: 50px;
+          }
+          .inputcss:focus {
+            border: 1px solid gray;
+            outline: none;
+          }
+          .btn {
+            background-color: blue !important;
+            color: white;
+            margin-bottom: 30px;
+          }
+          .btn:hover {
+            background-color: blueviolet !important;
+            color: white;
+          }
+        </style>
+      </head>
+      <body>
+        <nav class="container">
+          <div class="d-flex align-items-center justify-content-between p-3">
+            <img src="logo.png" alt="ANFRA" />
+            <p>Don't have an account?<a href="./login.html"> Login now! </a></p>
+          </div>
+        </nav>
+        <hr />
+        <div class="container p-4 w-100">
+          <div
+            class="d-flex flex-column align-items-center justify-content-center"
+          >
+            <h1>Update Data</h1>
+            <p></p>
+            <input
+              type="text"
+              id="fname"
+              class="inputcss inputdata"
+              name="fname"
+              placeholder="Full Name"
+              onchange="validateInputs()"
+            />
+            <input
+              type="text"
+              id="email"
+              class="inputcss inputdata"
+              name="email"
+              placeholder="Email address"
+              onchange="validateInputs()"
+              onchange="getemail()"
+            />
+            <input
+              type="password"
+              id="password"
+              class="inputcss inputdata"
+              name="password"
+              placeholder="Password"
+              onchange="validateInputs()"
+            />
+            <input
+              type="password"
+              id="cpassword"
+              class="inputcss"
+              onchange="validatePassword()"
+              name="cpassword"
+              placeholder="Confirm Password"
+              onchange="validateInputs()"
+            />
+            <input
+              type="text"
+              id="cname"
+              class="inputcss inputdata"
+              name="cname"
+              placeholder="Company Name"
+              onchange="validateInputs()"
+            />
+            <input
+              type="button"
+              id="submitbtn"
+              class="inputcss btn"
+              onclick="submitdata()"
+              value="Update Account"
+            />
+            <p class="text-center">
+              By clicking here and continuing,<br />
+              I agree to the <a href="#">Terms of Service</a> and
+              <a href="#">Privacy Policy</a>.
+            </p>
+          </div>
+        </div>
+        <div id="showdata"></div>
+
+        <script>
+          var userdata = {
+            fname: "",
+            email: "",
+            password: "",
+            cname: "",
+          };
+          const urlParams = new URLSearchParams(window.location.search);
+
+          // Get the value of the 'id' parameter
+          const id = urlParams.get("id");
+
+          // Use the 'id' value as needed
+          console.log(id);
+
+          var request = new XMLHttpRequest();
+          request.open(
+            "get",
+            "https://64538c86e9ac46cedf287029.mockapi.io/demo",
+            true
+          );
+          request.setRequestHeader("Content-Type", "application/json");
+          request.onreadystatechange = function () {
+            if (request.readyState === 4 && request.status === 200) {
+              let data = JSON.parse(request.responseText);
+              console.log(data);
+
+              data.forEach((e) => {
+                if (e.id === id) {
+                  console.log(e.fname);
+                  fname.value = e.fname;
+                  email.value = e.email;
+                  password.value = e.password;
+                  cpassword.value = e.password;
+                  cname.value = e.cname;
+                  userdata.id = e.id;
+                  userdata.fname = e.fname;
+                  userdata.email = e.email;
+                  userdata.password = e.password;
+                  userdata.cname = e.cname;
+                } else {
+                }
+              });
+            }
+          };
+          request.send();
+
+          const inputdata = document.getElementsByClassName("inputdata");
+
+          for (var i = 0; i < inputdata.length; i++) {
+            var input = inputdata[i];
+
+            input.addEventListener("input", (e) => {
+              userdata[e.target.name] = e.target.value;
+            });
+          }
+
+          function validatePassword() {
+            var passwordInput = document.getElementById("password");
+            var cpasswordInput = document.getElementById("cpassword");
+          }
+
+          const inputs = document.querySelectorAll(".inputdata");
+          const submitbtn = document.getElementById("submitbtn");
+
+          function validateInputs() {}
+
+          inputs.forEach((input) => {
+            input.addEventListener("input", validateInputs);
+          });
+
+          var showdata = document.getElementById("showdata");
+
+          function submitdata() {
+            if (
+              fname.value === "" ||
+              email.value === "" ||
+              password.value === "" ||
+              cpassword.value === "" ||
+              cname.value === ""
+            ) {
+              alert("Please fill all input fields");
+            } else if (password.value !== cpassword.value) {
+              alert("Please enter the same password as entered");
+            } else if (!email.value.match(/\S+@\S+\.\S+/)) {
+              alert("Please enter a valid email address");
+            } else if (!fname.value.match(/^[A-Za-z]+$/)) {
+              alert("Name only letters");
+            } else if (!cname.value.match(/^[A-Za-z]+$/)) {
+              alert("Company Name only letters");
+            } else {
+              // showdata.textContent = JSON.stringify(userdata);
+              // alert(JSON.stringify(userdata));
+
+              // Ajax to send data to the API
+              var request = new XMLHttpRequest();
+              request.open(
+                "PUT",
+                "https://64538c86e9ac46cedf287029.mockapi.io/demo/" + id,
+                true
+              );
+              request.setRequestHeader("Content-Type", "application/json");
+              request.onreadystatechange = function () {
+                if (request.readyState === 4 && request.status === 200) {
+                  alert("User data saved successfully!");
+                }
+              };
+              request.send(JSON.stringify(userdata));
+              localStorage.setItem("userdata", JSON.stringify(userdata));
+              // alert("data Updated successfully!");
+
+              setTimeout(function () {
+                window.location.href = "/dashboard.html";
+              }, 1000); // use for when redirect other page but steel data don't save in storage
+            }
+          }
+
+          // Get data from the API
+          var request1 = new XMLHttpRequest();
+          request1.open(
+            "GET",
+            "https://64538c86e9ac46cedf287029.mockapi.io/register"
+          );
+          request1.onreadystatechange = function () {
+            if (request1.readyState === 4 && request1.status === 200) {
+              var getdata = JSON.parse(request1.responseText);
+              console.log(getdata);
+
+              const emailverify = document.getElementById("email");
+              emailverify.addEventListener("input", getemail);
+
+              function getemail(e) {
+                // console.log(e.target.value);
+
+                for (var i = 0; i < getdata.length; i++) {
+                  if (getdata[i].email === e.target.value) {
+                    alert("User exists!");
+                    e.target.value = "";
+                  }
+                }
+              }
+            }
+          };
+          request1.send();
+        </script>
+      </body>
+    </html>
+  </body>
+</html>
